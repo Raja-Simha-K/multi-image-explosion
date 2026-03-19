@@ -46,14 +46,19 @@
     height: 70vh;
   }
 
-  .image-stack img {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
+  .image-item {
     position: absolute;
     top: 0;
     left: 0;
+    width: 100%;
+  }
+
+  .image-item img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
     border-radius: 8px;
+    display: block;
   }
 
   .image-text{
@@ -68,6 +73,13 @@
     justify-content: center;
     z-index: 99;
   }
+  .image-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+  }
 </style>
 </head>
 <body>
@@ -79,18 +91,29 @@
 <div class="image-section">
   <div class="image-wrapper">
     <div class="image-stack">
-      <img src="https://picsum.photos/400/225?random=1">
-      <img src="https://picsum.photos/400/225?random=2">
-      <img src="https://picsum.photos/400/225?random=3">
-      <img src="https://picsum.photos/400/225?random=4">
-      <img src="https://picsum.photos/400/225?random=5">
-      <img src="https://picsum.photos/400/225?random=1">
-      <img src="https://picsum.photos/400/225?random=2">
-      <img src="https://picsum.photos/400/225?random=3">
-      <img src="https://picsum.photos/400/225?random=4">
-      <img src="https://picsum.photos/400/225?random=5">
 
-    </div>
+        <div class="image-item"><img src="https://picsum.photos/400/225?random=1"></div>
+        <div class="image-item"><img src="https://picsum.photos/400/225?random=2"></div>
+        <div class="image-item"><img src="https://picsum.photos/400/225?random=3"></div>
+        <div class="image-item"><img src="https://picsum.photos/400/225?random=4"></div>
+        <div class="image-item"><img src="https://picsum.photos/400/225?random=5"></div>
+        <div class="image-item"><img src="https://picsum.photos/400/225?random=6"></div>
+        <div class="image-item"><img src="https://picsum.photos/400/225?random=7"></div>
+        <div class="image-item"><img src="https://picsum.photos/400/225?random=8"></div>
+        <div class="image-item"><img src="https://picsum.photos/400/225?random=9"></div>
+
+        <!-- ✅ LAST ITEM = VIDEO -->
+        <div class="image-item video-item">
+          <video 
+            src="https://www.pexels.com/download/video/31883946/" 
+            autoplay 
+            muted 
+            loop 
+            playsinline>
+          </video>
+        </div>
+
+      </div>
     <div class="image-text">
       <p>Scroll until the end</p>
     </div>
@@ -105,67 +128,88 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
 <script>
-  gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger);
 
-  const images = gsap.utils.toArray(".image-stack img");
+// ✅ Now targeting wrapper divs
+const items = gsap.utils.toArray(".image-item");
 
-  // ✅ Stack order (top → bottom)
-  images.forEach((img, i) => {
-    img.style.zIndex = images.length - i;
-  });
+// ✅ Stack order
+items.forEach((item, i) => {
+  item.style.zIndex = items.length - i;
+});
 
-  // ✅ STATIC DIRECTIONS (designed spread)
+// ✅ Directions
 const directions = [
-  { x: -0.8, y: 1  },
-  { x: 1,  y: -1 },
+  { x: -0.8, y: 1 },
+  { x: 1, y: -1 },
   { x: -1, y: -1 },
-  { x: 1,  y: 1  },
+  { x: 1, y: 1 },
   { x: -1, y: -0.8 },
-  { x: 1,  y: 1  },
-  { x: 0.8,  y: -1 },
+  { x: 1, y: 1 },
+  { x: 0.8, y: -1 },
   { x: -1, y: -1 },
-  { x: 1,  y: -1 },
-  { x: -1, y: 1  }
+  { x: 1, y: -1 },
+  { x: -1, y: 1 }
 ];
 
-  // ✅ Initial state
-  gsap.set(images, {
-    scale: 0,
-    x: 0,
-    y: 0,
-    transformOrigin: "center center",
-    willChange: "transform"
-  });
+// ✅ Initial state
+gsap.set(items, {
+  scale: 0,
+  x: 0,
+  y: 0,
+  transformOrigin: "center center",
+  willChange: "transform"
+});
 
-  gsap.to(images, {
-    scrollTrigger: {
-      trigger: ".image-section",
-      start: "top top",
-      end: "bottom bottom",
-      scrub: 1,
-      pin: ".image-wrapper",
-      anticipatePin: 1,
-      invalidateOnRefresh: true,
-    },
+// ✅ Animation
+gsap.to(items, {
+  scrollTrigger: {
+    trigger: ".image-section",
+    start: "top top",
+    end: "bottom bottom",
+    scrub: 1,
+    pin: ".image-wrapper",
+    anticipatePin: 1,
+    invalidateOnRefresh: true,
+  },
+  
 
-    scale: 1.2,
+  scale: (i) => {
+    if (i === items.length - 1) {
+      const el = items[i].querySelector("img, video");
 
-    // ✅ Use static directions
-      x: (i) => window.innerWidth * directions[i % directions.length].x,
-      y: (i) => window.innerHeight * directions[i % directions.length].y,
+      return Math.max(
+        window.innerWidth / el.offsetWidth,
+        window.innerHeight / el.offsetHeight
+      );
+    }
+    return 1.2;
+  },
 
-    // ✅ Staggered reveal
-    stagger: {
-      each: 0.07,
-      },
+  x: (i) => {
+    if (i === items.length - 1) return 0;
+    return window.innerWidth * directions[i % directions.length].x;
+  },
 
-    ease: "linear"
-  });
+  y: (i) => {
+    if (i === items.length - 1) return 0;
+    return window.innerHeight * directions[i % directions.length].y;
+  },
 
-  // ✅ Handle resize
-  window.addEventListener("resize", () => {
-    ScrollTrigger.refresh();
-  });
+  zIndex: (i) => (i === items.length - 1 ? 999 : items.length - i),
+
+  stagger: {
+    each: 0.05,
+  },
+
+  ease: "power2.out"
+});
+
+
+// ✅ Resize fix
+window.addEventListener("resize", () => {
+  ScrollTrigger.refresh();
+});
 </script>
 
 </body>
