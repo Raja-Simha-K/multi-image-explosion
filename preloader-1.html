@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>loader</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+                
+
+<style>
+  :root{
+    --h1: 19.2vw;
+    --h2: 10rem;
+    --h3: clamp(40px, 8rem, 8rem);
+    --h4: clamp(20px, 3rem, 3rem);
+  }
+  *{margin: 0;padding: 0;box-sizing: border-box;}
+  ::-webkit-scrollbar {width: 0;height: 0;}
+  body{background: #ffffff;color: #000000;font-family: 'Roboto', sans-serif;}
+  .loader-a-wrap{width: 100vw;height: 100vh;position: fixed;top: 0;left: 0;overflow: hidden;z-index: 99;background-color: #000; color: #ffffff;}
+  .loader-a{display: flex;align-items: center;justify-content: center;width: 100vw;height: 100vh;background: #000;}
+  .loader-stack{display: flex;align-items: start;justify-content: space-between;max-width: 80%;width: 100%;}
+  .loader-img{display: block;aspect-ratio: 3/4;width: 4.5vw;overflow: hidden;}
+  .loader-img:nth-of-type(3){flex-shrink: 0;}
+  .loader-img img{width: 100%;height: 100%;object-fit: cover;object-position: top;}
+
+  
+  .hero-section{width: 100%;height: 100vh;display: flex;align-items: center;justify-content: end;}  
+  .hero-a{width: 24vw;aspect-ratio: 3/4;position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);}
+  .hero-a img{width: 100%;height: 100%;object-fit: cover;transform: translateY(2px);}
+  .hero-b{display: block;text-align: center;width: 100%;}
+  .hero-b h1{font-size: 19.2vw;line-height: 0.8;text-transform: uppercase;}
+  .about-sec{padding: 100px 50px;}
+  .about-sec h2{font-size: clamp(40px,4rem,4rem);font-family: "Instrument Serif", serif;text-align: center;font-weight: 400;}
+</style>
+
+</head>
+<body>
+
+<div class="loader-a-wrap">
+  <div class="loader-a">
+  <div class="loader-stack">
+    <div class="loader-img">
+      <img src="https://aladesign.cz/wp-content/uploads/2025/05/preloader1-scaled.jpg" alt="">
+    </div>
+    <div class="loader-img">
+      <img src="https://aladesign.cz/wp-content/uploads/2025/05/preloader2-scaled.jpg" alt="">
+    </div>
+    <div class="loader-img">
+      <img src="https://aladesign.cz/wp-content/uploads/2025/05/preloader3-scaled.jpg" alt="">
+    </div>
+    <div class="loader-img">
+      <img src="https://aladesign.cz/wp-content/uploads/2025/05/preloader4-scaled.jpg" alt="">
+    </div>
+    <div class="loader-img">
+      <img src="https://aladesign.cz/wp-content/uploads/2025/05/preloader5-scaled.jpg" alt="">
+    </div>
+  </div>
+</div>
+</div>
+<section class="hero-section">
+    <div class="hero-a-wrap">
+      <div class="hero-a">
+        <img src="https://aladesign.cz/wp-content/uploads/2025/05/preloader3-scaled.jpg" alt="">
+      </div>
+    </div>
+    <div class="hero-b">
+      <h1>Alena Figurová</h1>
+    </div>
+</section>
+<section class="sec-pad about-sec">
+  <h2>I am a creative director with a passion for fashion, design and cosmetics, transforming trends into unforgettable campaigns.</h2>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+  const tl = gsap.timeline();
+
+  tl.from(".loader-img", {
+    y: 50,
+    opacity: 0,
+    duration: 1,
+    ease: "back.out(3)",
+    stagger: 0.09
+  });
+
+  tl.to(".loader-stack", {
+    maxWidth: "45%",
+    duration: 0.8,
+    ease: "power2.inOut"
+  });
+
+  tl.fromTo(".loader-img",
+    { width: "4.5vw" },
+    {
+      width: "7vw",
+      duration: 0.8,
+      ease: "power2.inOut"
+    },
+    "<"
+  );
+  
+  tl.to(".loader-img:not(:nth-child(3))", {
+    height: 0,
+    duration: 1,
+    ease: "power2.inOut",
+    stagger: {
+      each: 0.12,
+      from: "edges"
+    }
+  }, ">");
+
+  tl.to(".loader-img:nth-child(3)", {
+    width: "24vw",
+    duration: 0.8,
+    ease: "power3.inOut"
+  });
+
+  tl.to(".loader-a-wrap", {
+    height: 0,
+    duration: 0.9,
+    ease: "power3.inOut"
+  }, ">");
+</script>
+
+</body>
+</html>
