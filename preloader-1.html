@@ -10,7 +10,7 @@
                 
 
 <style>
-  :root{
+  ::root{
     --h1: 19.2vw;
     --h2: 10rem;
     --h3: clamp(40px, 8rem, 8rem);
@@ -27,9 +27,11 @@
   .loader-img img{width: 100%;height: 100%;object-fit: cover;object-position: top;}
 
   
-  .hero-section{width: 100%;height: 100vh;display: flex;align-items: center;justify-content: end;}  
-  .hero-a{width: 24vw;aspect-ratio: 3/4;position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);}
+  .hero-section{width: 100%;height: 100vh;display: flex;align-items: end;justify-content: end;}  
+  .hero-a{width: 24vw;aspect-ratio: 3/4;position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);z-index: 9;}
   .hero-a img{width: 100%;height: 100%;object-fit: cover;transform: translateY(2px);}
+  .hero-caption {overflow: hidden;}
+  .hero-line {display: block;overflow: hidden;}
   .hero-b{display: block;text-align: center;width: 100%;}
   .hero-b h1{font-size: 19.2vw;line-height: 0.8;text-transform: uppercase;}
   .about-sec{padding: 100px 50px;}
@@ -61,12 +63,10 @@
 </div>
 </div>
 <section class="hero-section">
-    <div class="hero-a-wrap">
-      <div class="hero-a">
-        <img src="https://aladesign.cz/wp-content/uploads/2025/05/preloader3-scaled.jpg" alt="">
-      </div>
+    <div class="hero-a">
+      <img src="https://aladesign.cz/wp-content/uploads/2025/05/preloader3-scaled.jpg" alt="">
     </div>
-    <div class="hero-b">
+    <div class="hero-b hero-caption">
       <h1>Alena Figurová</h1>
     </div>
 </section>
@@ -76,54 +76,90 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/split-type"></script>
 <script>
-  const tl = gsap.timeline();
+history.scrollRestoration = "manual";
 
-  tl.from(".loader-img", {
-    y: 50,
-    opacity: 0,
-    duration: 1,
-    ease: "back.out(3)",
-    stagger: 0.09
-  });
+window.onload = function () {
+  window.scrollTo(0, 0);
 
-  tl.to(".loader-stack", {
-    maxWidth: "45%",
+  setTimeout(() => {
+    window.scrollTo(0, 0);
+  }, 10);
+};
+
+
+const tl = gsap.timeline();
+
+tl.from(".loader-img", {
+  y: 50,
+  opacity: 0,
+  duration: 1,
+  ease: "back.out(3)",
+  stagger: 0.09
+});
+
+tl.to(".loader-stack", {
+  maxWidth: "45%",
+  duration: 0.8,
+  ease: "power2.inOut"
+});
+
+tl.fromTo(".loader-img",
+  { width: "4.5vw" },
+  {
+    width: "7vw",
     duration: 0.8,
     ease: "power2.inOut"
-  });
+  },
+  "<"
+);
 
-  tl.fromTo(".loader-img",
-    { width: "4.5vw" },
-    {
-      width: "7vw",
-      duration: 0.8,
-      ease: "power2.inOut"
-    },
-    "<"
-  );
-  
-  tl.to(".loader-img:not(:nth-child(3))", {
-    height: 0,
-    duration: 1,
-    ease: "power2.inOut",
-    stagger: {
-      each: 0.12,
-      from: "edges"
-    }
-  }, ">");
+tl.to(".loader-img:not(:nth-child(3))", {
+  height: 0,
+  duration: 1,
+  ease: "power2.inOut",
+  stagger: {
+    each: 0.12,
+    from: "edges"
+  }
+}, ">");
 
-  tl.to(".loader-img:nth-child(3)", {
-    width: "24vw",
-    duration: 0.8,
-    ease: "power3.inOut"
-  });
+tl.to(".loader-img:nth-child(3)", {
+  width: "24vw",
+  duration: 0.8,
+  ease: "power3.inOut"
+});
 
-  tl.to(".loader-a-wrap", {
-    height: 0,
-    duration: 0.9,
-    ease: "power3.inOut"
-  }, ">");
+
+// 👇 SPLIT TEXT (do this BEFORE adding to timeline)
+const split  = new SplitType('.hero-caption h1', {
+  types: 'lines'
+});
+
+split.lines.forEach(line => {
+  const wrap = document.createElement('div');
+  wrap.classList.add('hero-line');
+  line.parentNode.insertBefore(wrap, line);
+  wrap.appendChild(line);
+});
+
+// initial state
+gsap.set(split.lines, { yPercent: 100 });
+
+
+// 👇 sync BOTH animations together
+tl.to(".loader-a-wrap", {
+  height: 0,
+  duration: 0.9,
+  ease: "power3.inOut"
+}, ">").to(split.lines, {
+  yPercent: 0,
+  duration: 1,
+  stagger: 0.1,
+  ease: "power4.out"
+}, "<0.5s"); // 👈 THIS is the key
+
 </script>
 
 </body>
