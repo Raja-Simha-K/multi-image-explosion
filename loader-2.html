@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Loader 2</title>
+	<style>
+		*{margin: 0;padding: 0;box-sizing: border-box;}
+		body{font-family: "Inter", sans-serif;}
+		.container{padding: 0 24px}
+		.loader{width: 100%;height: 100vh;background: #ffffff;display: flex;align-items: center;justify-content: center;position: fixed;left: 0;top: 0;z-index: 999}
+		.loader-wrap {width: 30%;aspect-ratio: 16/9;overflow: hidden;margin: auto;}
+		.loader-wrap .swipe-img-card{position: relative;width: 100%;height: 100%;}
+		.loader-wrap .swipe-img-wrap{width: 100%;height: 100%;position: absolute;left: 0;bottom: 0;clip-path: inset(0% 0% 100% 0%);}
+		.loader-wrap .swipe-img-wrap img{width: 100%;height: 100%;object-fit: cover;object-position: bottom;}
+
+		.hero-a{width: 100%;height: 100vh;padding: 50px 0;color: #fff}
+		.hero-a img{width: 100%;height: 100%;object-fit: cover;object-position: bottom; position: absolute;left: 0;top: 0}
+		.hero-a .container{position: relative;}
+		.hero-caption {text-align: center;overflow: hidden;}
+		.hero-caption h1{font-size: 14vw;letter-spacing: -0.4rem;line-height: 0.8}
+	</style>
+</head>
+<body>
+	<div class="loader">
+		<div class="loader-wrap">
+			<div class="swipe-img-card swipe-image-animation">
+				<div class="swipe-img-wrap"><img src="images/image-3.jpg" alt=""></div>
+				<div class="swipe-img-wrap"><img src="images/image-5.png" alt=""></div>
+				<div class="swipe-img-wrap"><img src="images/image-2.jpg" alt=""></div>
+				<div class="swipe-img-wrap"><img src="images/image-6.jpg" alt=""></div>
+				<div class="swipe-img-wrap"><img src="images/image-4.png" alt=""></div>
+				<div class="swipe-img-wrap"><img src="images/image-1.jpg" alt=""></div>
+			</div>
+		</div>
+	</div>
+	<section class="hero-a">
+		<img src="images/image-1.jpg" alt="">
+		<div class="container">
+			<div class="hero-caption">
+				<h1>THIS IS SIMHA</h1>	
+			</div>
+		</div>
+	</section>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/CustomEase.min.js"></script>
+<script src="https://unpkg.com/split-type"></script>
+
+<script>
+const items = document.querySelectorAll(".swipe-img-wrap");
+
+const tl = gsap.timeline({ease: "power4.inOut",});
+
+// create ease once
+
+
+// first item (solo)
+tl.to(items[0], {
+  clipPath: "inset(0% 0% 0% 0%)",
+  duration: 1,
+  ease: "power4.inOut",
+});
+
+// rest of items (from index 1)
+const imgs = Array.from(items).slice(1);
+
+let delay = 1;        // current start time
+let gap = 0.35;      // initial gap
+const decay = 0.75;  // how fast gap shrinks (0.75 = 25% faster each step)
+
+imgs.forEach((el, i) => {
+  tl.to(el, {
+    clipPath: "inset(0% 0% 0% 0%)",
+    duration: 1.2,
+    ease: "circ.inOut"
+  }, delay);
+
+  delay += gap;   // move start time forward
+  gap *= decay;   // reduce gap → faster next animation
+});
+
+// expand loader
+tl.to(".loader-wrap", {
+  width: "100%",
+  height: "100vh",
+  aspectRatio: "unset",
+  duration: 0.6,
+  ease: "power2.out"
+});
+
+// hide loader
+tl.to(".loader", {
+  opacity: 0,
+  duration: 0.5,
+  ease: "power2.out",
+  onComplete: () => {
+    document.querySelector(".loader").style.display = "none";
+  }
+});
+
+// text animation
+const split = new SplitType('.hero-caption h1', { types: 'words' });
+
+tl.from(split.words, {
+  y: "100%",
+  duration: 0.8,
+  stagger: 0.3,
+  ease: "power3.inOut"
+});
+</script>
+
+</html>
