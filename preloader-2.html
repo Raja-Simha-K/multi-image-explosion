@@ -9,13 +9,16 @@
 		body{font-family: "Inter", sans-serif;}
 		.container{padding: 0 24px}
 		.loader{width: 100%;height: 100vh;background: #ffffff;display: flex;align-items: center;justify-content: center;position: fixed;left: 0;top: 0;z-index: 999}
-		.loader-wrap {width: 30%;aspect-ratio: 16/9;overflow: hidden;margin: auto;}
+		.loader-wrap {width: 30%;aspect-ratio: 16/9;overflow: hidden;margin: auto;position: relative;}
 		.loader-wrap .swipe-img-card{position: relative;width: 100%;height: 100%;}
 		.loader-wrap .swipe-img-wrap{width: 100%;height: 100%;position: absolute;left: 0;bottom: 0;clip-path: inset(0% 0% 100% 0%);}
-		.loader-wrap .swipe-img-wrap img{width: 100%;height: 100%;object-fit: cover;object-position: bottom;}
+		.loader-wrap .swipe-img-wrap img{width: 100%;height: 105%;object-fit: cover;object-position: center;top: -5%;}
 
 		.hero-a{width: 100%;height: 100vh;padding: 50px 0;color: #fff}
-		.hero-a img{width: 100%;height: 100%;object-fit: cover;object-position: bottom; position: absolute;left: 0;top: 0}
+		.hero-a .hero-img-wrap{background-size: cover;background-position: center -5%;}
+		.hero-a .hero-img-wrap{width: 30%;aspect-ratio: 16/9;position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);}
+		.hero-a .hero-img-wrap .hero-img{width: 100%;height: 100%;position: absolute;left: 0;top: 0;z-index: 1;overflow: hidden;}
+		.hero-a .hero-img-wrap .hero-img img{width: 100%;height: 105%;object-fit: cover;position: absolute;left: 0;top: -5%;}
 		.hero-a .container{position: relative;}
 		.hero-caption {text-align: center;overflow: hidden;}
 		.hero-caption h1{font-size: 14vw;letter-spacing: -0.4rem;line-height: 0.8}
@@ -35,7 +38,26 @@
 		</div>
 	</div>
 	<section class="hero-a">
-		<img src="images/image-1.jpg" alt="">
+		<div class="hero-img-wrap" style="background-image: url(images/image-1.jpg);">
+			<div class="hero-img" >
+				<img src="images/image-1.jpg" alt="">
+			</div>	
+			<div class="hero-img" >
+				<img src="images/image-3.jpg" alt="">
+			</div>
+			<div class="hero-img" >
+				<img src="images/image-5.png" alt="">
+			</div>
+			<div class="hero-img" >
+				<img src="images/image-2.jpg" alt="">
+			</div>
+			<div class="hero-img" >
+				<img src="images/image-6.jpg" alt="">
+			</div>
+			<div class="hero-img" >
+				<img src="images/image-4.png" alt="">
+			</div>
+		</div>
 		<div class="container">
 			<div class="hero-caption">
 				<h1>THIS IS SIMHA</h1>	
@@ -48,66 +70,121 @@
 <script src="https://unpkg.com/split-type"></script>
 
 <script>
-const items = document.querySelectorAll(".swipe-img-wrap");
+	const items = document.querySelectorAll(".swipe-img-wrap");
+	const bannerWrap = document.querySelector(".hero-img-wrap");
+	const bannerImage = document.querySelectorAll(".hero-img");
+	const bannerImageEach = document.querySelectorAll(".hero-img img");
 
-const tl = gsap.timeline({ease: "power4.inOut",});
+	
+	const tl = gsap.timeline({
+		ease: "power4.inOut",
+	});
+	
+	tl.to(items[0], {
+		clipPath: "inset(0% 0% 0% 0%)",
+		duration: 1,
+		ease: "circ.inOut",
+	});
+	
+	const imgs = Array.from(items).slice(1);
+	let delay = 1; 
+	let gap = 0.5; 
+	const decay = 0.75; 
+	imgs.forEach((el, i) => {
+		tl.to(el, {
+			clipPath: "inset(0% 0% 0% 0%)",
+			duration: 1.2,
+			ease: "circ.inOut"
+		}, delay);
 
-// create ease once
+		delay += gap; 
+		gap *= decay; 
+	});
+	tl.set(Array.from(bannerImage).slice(1), {
+		clipPath: "inset(0% 0% 100% 0%)",
+		display: "none",
+	});
+	
+	tl.to(".loader", {
+		opacity: 0,
+		duration: 0.5,
+		ease: "circ.inOut",
+		onComplete: () => {
+			document.querySelector(".loader").style.display = "none";
+		}
+	});
+	
+	tl.to(bannerWrap, {
+		width: "100%",
+		height: "100vh",
+		aspectRatio: "unset",
+		duration: 0.6,
+		ease: "circ.inOut"
+	});
+
+	
+	
+	const tlTwo = gsap.timeline({
+		repeat: -1
+	});
+
+	let zIndexCounter = 1;
+
+	tlTwo.fromTo(bannerImage,
+		{
+			clipPath: "inset(0 0% 100% 0%)"
+		},
+		{
+			clipPath: "inset(0% 0% 0% 0%)",
+			duration: 1,
+			ease: "circ.inOut",
+			stagger: {
+				each: 4,
+				onStart: function () {
+					const el = this.targets()[0];
+					const img = el.querySelector("img");
+					gsap.set(el, {
+						display: "block",
+					});
+
+					gsap.to(img, {
+						top: "0%",
+						duration: 6,
+						ease: "linear"
+					});
+				},
+
+				onComplete: function () {
+					const elNew = this.targets()[0];
+					const imgEl = elNew.querySelector("img");
+
+					gsap.delayedCall(4.8, () => {
+						gsap.set(el, { display: "none" });
+						gsap.set(imgEl, { top: "-5%",});
+					});
+				}
+			}
+		}
+	);
 
 
-// first item (solo)
-tl.to(items[0], {
-  clipPath: "inset(0% 0% 0% 0%)",
-  duration: 1,
-  ease: "power4.inOut",
-});
+	
+	const split = new SplitType('.hero-caption h1', {
+		types: 'words'
+	});
 
-// rest of items (from index 1)
-const imgs = Array.from(items).slice(1);
+	tl.from(split.words, {
+		y: "100%",
+		duration: 0.8,
+		stagger: 0.3,
+		ease: "power3.inOut"
+	});
 
-let delay = 1;        // current start time
-let gap = 0.35;      // initial gap
-const decay = 0.75;  // how fast gap shrinks (0.75 = 25% faster each step)
 
-imgs.forEach((el, i) => {
-  tl.to(el, {
-    clipPath: "inset(0% 0% 0% 0%)",
-    duration: 1.2,
-    ease: "circ.inOut"
-  }, delay);
+	
+	const master = gsap.timeline();
+	master.add(tl).add(tlTwo);
 
-  delay += gap;   // move start time forward
-  gap *= decay;   // reduce gap → faster next animation
-});
-
-// expand loader
-tl.to(".loader-wrap", {
-  width: "100%",
-  height: "100vh",
-  aspectRatio: "unset",
-  duration: 0.6,
-  ease: "power2.out"
-});
-
-// hide loader
-tl.to(".loader", {
-  opacity: 0,
-  duration: 0.5,
-  ease: "power2.out",
-  onComplete: () => {
-    document.querySelector(".loader").style.display = "none";
-  }
-});
-
-// text animation
-const split = new SplitType('.hero-caption h1', { types: 'words' });
-
-tl.from(split.words, {
-  y: "100%",
-  duration: 0.8,
-  stagger: 0.3,
-  ease: "power3.inOut"
-});
 </script>
 
 </html>
