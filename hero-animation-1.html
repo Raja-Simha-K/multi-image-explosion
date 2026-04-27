@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Loader 4</title>
+	<title>Circle Hero Animation</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
 		.circle-round{content:"";display:block;position:absolute;inset: 0;margin: auto;width: 40%;aspect-ratio: 1/1;}
 		.circle-round-small{width: 20%;}
 		.circle-round svg{width:100%;height:100%;}
-		.circle-round svg .stroke-sub{stroke: #666}
+		.circle-round svg .stroke-sub{stroke: #aaa}
 
 		.circle-top{top: -80%;transform: rotate(90deg);}
 		.circle-right{left: 40%;transform: rotate(180deg);}
@@ -32,9 +32,9 @@
 		.circle-round-small.circle-right{left: -20%;}
 
 		.hero-grid-hz{width: 100%;height: 100%;display: flex;align-items: center;justify-content: space-between;}
-		.hero-grid-hz span{width: 0px;border-right: 1px solid #333; height: 100%;}
+		.hero-grid-hz span{width: 0px;border-right: 1px solid #aaa; height: 100%;}
 		.hero-grid-vt{width: 100%;height: 100%;display: flex;flex-direction: column; justify-content: space-between;}
-		.hero-grid-vt span{height: 0px;border-top: 1px solid #333; }
+		.hero-grid-vt span{height: 0.5px;border-top: 0.5px solid #aaa; }
 		.hero-grid-hz,.hero-grid-vt{position: absolute;left: 50%;top: 50%;width: 100%;height: 100%;transform: translate(-50%,-50%);}
 		.hero-grid-hz span:first-child{margin-left: 10vw;}
 		.hero-grid-hz span:last-child{margin-right: 10vw;}
@@ -142,11 +142,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const tl = gsap.timeline({ defaults: { ease: "power2.inOut" } });
 
     // Draw large circles
+    tl.from('.blue-circle', {
+        opacity: 0,
+        duration: 1,
+    });
+
+    // Draw large circles
     tl.from(largeEllipses, {
         duration: 1.4,
         drawSVG: "0%",
         stagger: 0.1
-    });
+    },"<");
 
     // Draw small circles
     tl.from(smallEllipses, {
