@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Loader 4</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+	<style>
+		*{margin: 0;padding: 0;box-sizing: border-box;}
+		body{font-family: "Geist", sans-serif;background: #000;color: #ffffff;font-weight: 300;}
+		.circle-hero{width: 100%;height: 100svh;position: relative;}
+		.hero-caption{position: absolute;inset: 0; display: flex;align-items: end;justify-content: flex-start;padding: 16px;pointer-events: none;}
+		.hero-caption h1{font-size: 82px;max-width: 991px;font-weight: 200;line-height: 1;margin: 0;text-transform: capitalize;}
+
+		.circle-container{width: 100%;height: 100svh;position: fixed;inset: 0;}
+		.circle-wrap{width: 100%;height: 100%;position: absolute;inset: 0;}
+		.circle-round{content:"";display:block;position:absolute;inset: 0;margin: auto;width: 40%;aspect-ratio: 1/1;}
+		.circle-round-small{width: 20%;}
+		.circle-round svg{width:100%;height:100%;}
+		.circle-round svg .stroke-sub{stroke: #666}
+
+		.circle-top{top: -80%;transform: rotate(90deg);}
+		.circle-right{left: 40%;transform: rotate(180deg);}
+		.circle-bottom{top: 80%;transform: rotate(270deg);}
+		.circle-left{left: -40%;}
+
+		.circle-round-small.circle-top{top: -40%;}
+		.circle-round-small.circle-bottom{top: 40%;}
+		.circle-round-small.circle-left{left: 20%;}
+		.circle-round-small.circle-right{left: -20%;}
+
+		.hero-grid-hz{width: 100%;height: 100%;display: flex;align-items: center;justify-content: space-between;}
+		.hero-grid-hz span{width: 0px;border-right: 1px solid #333; height: 100%;}
+		.hero-grid-vt{width: 100%;height: 100%;display: flex;flex-direction: column; justify-content: space-between;}
+		.hero-grid-vt span{height: 0px;border-top: 1px solid #333; }
+		.hero-grid-hz,.hero-grid-vt{position: absolute;left: 50%;top: 50%;width: 100%;height: 100%;transform: translate(-50%,-50%);}
+		.hero-grid-hz span:first-child{margin-left: 10vw;}
+		.hero-grid-hz span:last-child{margin-right: 10vw;}
+		.hero-grid-vt span:first-child{margin-top: 10vh;}
+		.hero-grid-vt span:last-child{margin-bottom: 10vh;}
+		.space{height: 200vh;}
+
+		.blue-circle{width: 40%;aspect-ratio: 1/1;position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);display: flex;align-items: center;justify-content: center;}
+		.blue-circle img{width: auto;height: 120%;animation: rotate 10s infinite linear;}
+		@keyframes rotate{
+			0%{transform: rotate(0);}
+			100%{transform: rotate(360deg);}
+		}
+	</style>
+</head>
+<body>
+	<div class="circle-container">
+		<div class="blue-circle">
+			<img src="images/blue-grad-circle.webp" alt="">
+		</div>
+		<div class="hero-grid-hz">
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+		</div>
+		<div class="circle-wrap">
+			<span class="circle-round">
+				<svg width="412.75" height="412.75" viewBox="0 0 413.5 413.5" preserveAspectRatio="none">
+					<ellipse class="h-full w-full stroke-sub" stroke-width="0.5" cx="206.375" cy="206.375" rx="206" ry="206" fill="none" style="stroke-dashoffset: 0; stroke-dasharray: none;"></ellipse>
+				</svg>
+			</span>
+			<span class="circle-round ellipseLarge circle-top">
+				<svg width="412.75" height="412.75" viewBox="0 0 413.5 413.5" preserveAspectRatio="none">
+					<ellipse class="h-full w-full stroke-sub" stroke-width="0.5" cx="206.375" cy="206.375" rx="206" ry="206" fill="none" style="stroke-dashoffset: 0; stroke-dasharray: none;"></ellipse>
+				</svg>
+			</span>
+			<span class="circle-round ellipseLarge circle-right">
+				<svg width="412.75" height="412.75" viewBox="0 0 413.5 413.5" preserveAspectRatio="none">
+					<ellipse class="h-full w-full stroke-sub" stroke-width="0.5" cx="206.375" cy="206.375" rx="206" ry="206" fill="none" style="stroke-dashoffset: 0; stroke-dasharray: none;"></ellipse>
+				</svg>
+			</span>
+			<span class="circle-round ellipseLarge circle-bottom">
+				<svg width="412.75" height="412.75" viewBox="0 0 413.5 413.5" preserveAspectRatio="none">
+					<ellipse class="h-full w-full stroke-sub" stroke-width="0.5" cx="206.375" cy="206.375" rx="206" ry="206" fill="none" style="stroke-dashoffset: 0; stroke-dasharray: none;"></ellipse>
+				</svg>
+			</span>
+			<span class="circle-round ellipseLarge circle-left">
+				<svg width="412.75" height="412.75" viewBox="0 0 413.5 413.5" preserveAspectRatio="none">
+					<ellipse class="h-full w-full stroke-sub" stroke-width="0.5" cx="206.375" cy="206.375" rx="206" ry="206" fill="none" style="stroke-dashoffset: 0; stroke-dasharray: none;"></ellipse>
+				</svg>
+			</span>
+			<span class="circle-round circle-round-small ellipseSmall circle-top">
+				<svg width="412.75" height="412.75" viewBox="0 0 413.5 413.5" preserveAspectRatio="none">
+					<ellipse class="h-full w-full stroke-sub" stroke-width="0.5" cx="206.375" cy="206.375" rx="206" ry="206" fill="none" style="stroke-dashoffset: 0; stroke-dasharray: none;"></ellipse>
+				</svg>
+			</span>
+			<span class="circle-round circle-round-small ellipseSmall circle-right">
+				<svg width="412.75" height="412.75" viewBox="0 0 413.5 413.5" preserveAspectRatio="none">
+					<ellipse class="h-full w-full stroke-sub" stroke-width="0.5" cx="206.375" cy="206.375" rx="206" ry="206" fill="none" style="stroke-dashoffset: 0; stroke-dasharray: none;"></ellipse>
+				</svg>
+			</span>
+			<span class="circle-round circle-round-small ellipseSmall circle-bottom">
+				<svg width="412.75" height="412.75" viewBox="0 0 413.5 413.5" preserveAspectRatio="none">
+					<ellipse class="h-full w-full stroke-sub" stroke-width="0.5" cx="206.375" cy="206.375" rx="206" ry="206" fill="none" style="stroke-dashoffset: 0; stroke-dasharray: none;"></ellipse>
+				</svg>
+			</span>
+			<span class="circle-round circle-round-small ellipseSmall circle-left">
+				<svg width="412.75" height="412.75" viewBox="0 0 413.5 413.5" preserveAspectRatio="none">
+					<ellipse class="h-full w-full stroke-sub" stroke-width="0.5" cx="206.375" cy="206.375" rx="206" ry="206" fill="none" style="stroke-dashoffset: 0; stroke-dasharray: none;"></ellipse>
+				</svg>
+			</span>
+		</div>
+	</div>
+	<section class="circle-hero">
+		<div class="hero-grid-vt">
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+		</div>
+		<div class="hero-caption">
+			<h1>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h1>
+		</div>
+	</section>
+	<section class="space">
+
+	</section>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/DrawSVGPlugin.min.js" ></script>
+
+<script>
+	gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin);
+document.addEventListener("DOMContentLoaded", () => {
+    const ellipseRound = document.querySelectorAll('.circle-round');
+    const largeEllipses = document.querySelectorAll('.ellipseLarge ellipse');
+    const smallEllipses = document.querySelectorAll('.ellipseSmall ellipse');
+    const hzLines = document.querySelectorAll('.hero-grid-hz span');
+    const vtLines = document.querySelectorAll('.hero-grid-vt');
+
+    const tl = gsap.timeline({ defaults: { ease: "power2.inOut" } });
+
+    // Draw large circles
+    tl.from(largeEllipses, {
+        duration: 1.4,
+        drawSVG: "0%",
+        stagger: 0.1
+    });
+
+    // Draw small circles
+    tl.from(smallEllipses, {
+        duration: 1.2,
+        drawSVG: "0%",
+        stagger: 0.08
+    }, "-=0.8");
+
+    // Animate grids
+	tl.from(vtLines, {
+        duration: 1.8,
+        width: 0,
+        stagger: 0.12,
+		onComplete: function(){
+			gsap.to(vtLines, {clearProps: "all"})
+		}
+    }, "-=1.4");
+	
+    tl.from(hzLines, {
+        duration: 1.5,
+        height: 0,
+        stagger: 0.1,
+		onComplete: function(){
+			gsap.to(hzLines, {clearProps: "all"})
+		}
+    }, "-=1.2");
+
+	ellipseRound.forEach(el => {
+
+		gsap.fromTo(el,
+			{
+				inset: () => {
+					const rect = el.getBoundingClientRect();
+					return `${rect.top}px ${window.innerWidth - rect.right}px ${window.innerHeight - rect.bottom}px ${rect.left}px`;
+				}
+			},
+			{
+				scrollTrigger: {
+					trigger: ".circle-hero",
+					start: "bottom 90%",
+					end: "bottom 0%",
+					scrub: 1,
+					invalidateOnRefresh: true
+				},
+				inset: "0px 0px 0px 0px",
+				width: "80%",
+				rotate: "0",
+				ease: "none",
+				immediateRender: false
+			}
+		);
+
+	});
+
+	gsap.to(hzLines, {
+        opacity : 0,
+		scrollTrigger: {
+			trigger: ".circle-hero",
+			start: "bottom 90%",
+			end: "bottom 0%",
+			scrub: 1,
+		},
+    });
+	
+	gsap.to('.blue-circle', {
+        filter: "blur(10px)", 
+		scrollTrigger: {
+			trigger: ".circle-hero",
+			start: "bottom 90%",
+			end: "bottom 0%",
+			scrub: 1,
+		},
+    });
+	gsap.to('.blue-circle img', {
+        height : "250%",
+		scrollTrigger: {
+			trigger: ".circle-hero",
+			start: "bottom 90%",
+			end: "bottom 0%",
+			scrub: 1,
+		},
+    });
+
+    
+});
+</script>
+
+</html>
