@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Pixel Loader Hero</title>
+
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: "Inter", sans-serif;
+			overflow: hidden;
+			background-color: #000000;
+		}
+
+		.hero-a {
+			position: relative;
+			width: 100%;
+			height: 100vh;
+		}
+
+		.hero-a img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+
+		/* LOADER */
+		.loader{position:absolute;inset:0;z-index:10;overflow:hidden;}
+		.loader-grid{display:grid;width:100%;height:100%;grid-template-columns:repeat(20,1fr);grid-template-rows:repeat(12,1fr);}
+		.loader-pixel{background:red;width:100%;height:100%;}
+		video{width: 100%;height: 100%;object-fit: cover;object-position: center;}
+	</style>
+</head>
+
+<body>
+
+<section class="hero-a">
+	<div class="loader">
+		<div class="loader-grid"></div>
+	</div>
+	<video loop autoplay muted class="hero-video">
+		<source src="images/hip.webm" type="video/mp4">
+	</video>
+	<img src="images/image-1.jpg" alt="">
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+<script>
+const grid = document.querySelector(".loader-grid");
+
+// size of each pixel block (tweak this)
+const pixelSize = 70;
+
+// get viewport size
+const vw = window.innerWidth;
+const vh = window.innerHeight;
+
+// calculate cols & rows dynamically
+const cols = Math.ceil(vw / pixelSize);
+const rows = Math.ceil(vh / pixelSize);
+
+// apply grid styles dynamically
+grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+grid.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+
+// create pixels
+for (let i = 0; i < cols * rows; i++) {
+	const div = document.createElement("div");
+	div.classList.add("loader-pixel");
+	grid.appendChild(div);
+}
+
+const pixels = Array.from(document.querySelectorAll(".loader-pixel"));
+
+// group pixels into rows
+let gridArray = [];
+for (let r = 0; r < rows; r++) {
+	let rowArr = [];
+	for (let c = 0; c < cols; c++) {
+		rowArr.push(pixels[r * cols + c]);
+	}
+	gridArray.push(rowArr);
+}
+
+// timeline
+const tl = gsap.timeline({ delay: 0.5 });
+
+// animate row by row (top → bottom)
+gridArray.forEach((row, i) => {
+	const shuffledRow = gsap.utils.shuffle(row);
+
+	tl.to(shuffledRow, {
+		opacity: 0,
+		duration: 0.1,
+		stagger: {
+			each: 0.025,
+			from: "random"
+		},
+		ease: "expo.in"
+	}, i * 0.07 + Math.random() * 0.05);
+});
+tl.to('.loader',{
+	display:"none",
+})
+tl.fromTo('.hero-video',{
+	opacity: 0,
+},{
+	opacity: 1,
+	duration: 3,
+	ease: "power1.inOut"
+})
+
+</script>
+
+</body>
+</html>
